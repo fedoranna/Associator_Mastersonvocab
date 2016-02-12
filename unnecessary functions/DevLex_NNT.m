@@ -1,0 +1,158 @@
+%% Description: DevLex model using the Neural Network Toolbox.
+
+% Guide: Advanced Topics - Custom networks and Network properties (Neural Network Toolbox)
+
+%% Parameters
+
+clear
+path('E:\Matlab_functions',path);
+vocabsize=3;
+Pmapsize=16;
+Smapsize=25;
+
+%% Setup
+
+% Input
+INPUTS=lexicongenerator_random(vocabsize);
+
+% I. Architecture
+net=network;
+net.numInputs = 2;
+net.numLayers = 2;
+net.biasConnect = [1; 1];
+net.inputConnect = [1 0; 0 1];
+net.layerConnect = [0 1; 1 0];
+net.outputConnect = [1 1];
+
+% II. Subobject structures
+
+% II/1. Inputs
+net.inputs{1}.exampleInput = INPUTS{1}(1,:); % ??? Is it the training examples?
+net.inputs{1}.processFcns = {'removeconstantrows','mapminmax'}; % ??? What is this?
+net.inputs{2}.exampleInput = INPUTS{2}(1,:); % ??? Is it the training examples?
+net.inputs{2}.processFcns = {'removeconstantrows','mapminmax'};
+
+% II/2. Layers
+    %net.layers{1};
+net.layers{1}.distanceFcn='boxdist'; 
+net.layers{1}.distances; % read-only
+net.layers{1}.initFcn = 'initnw';
+net.layers{1}.netInputFcn = 'netsum';
+net.layers{1}.netInputParam; % parameters of the input function; help(net.layers{i}.netInputFcn)
+net.layers{1}.positions; % read-only
+net.layers{1}.size=Pmapsize; % changes the dimensions!
+net.layers{1}.dimensions; % =[4 4]
+net.layers{1}.topologyFcn = 'gridtop';
+net.layers{1}.transferFcn = 'tansig';
+net.layers{1}.transferParam; % parameters of the transferfunction; help(net.layers{i}.transferFcn)
+    
+    %net.layers{2};
+net.layers{2}.dimensions=[Smapsize Smapsize];
+net.layers{2}.distanceFcn='boxdist'; 
+net.layers{2}.distances; % read-only
+net.layers{2}.initFcn = 'initnw';
+net.layers{2}.netInputFcn = 'netsum';
+net.layers{2}.netInputParam; % parameters of the input function; help(net.layers{i}.netInputFcn)
+net.layers{2}.positions; % read-only
+net.layers{2}.size=Smapsize; % changes the dimensions!
+net.layers{2}.dimensions; % =[4 4]
+net.layers{2}.topologyFcn = 'gridtop';
+net.layers{2}.transferFcn = 'tansig';
+net.layers{2}.transferParam; % parameters of the transferfunction; help(net.layers{i}.transferFcn)
+
+% II/3. Outputs
+net.outputs{1}.exampleOutput; % ??? Is it the training examples?
+net.outputs{1}.processFcns = {'mapminmax'}; % ??? What is this?
+net.outputs{1}.processParams;
+net.outputs{2}.exampleOutput; % ??? Is it the training examples?
+net.outputs{2}.processFcns = {'mapminmax'};
+net.outputs{2}.processParams;
+
+% II/4. Biases
+net.biases{1}.initFcn = 'rands';
+net.biases{1}.learn = 1;
+net.biases{1}.learnFcn = 'learnsom';
+net.biases{1}.learnParam;
+net.biases{1}.size; % read-only
+
+% II/5. Input weights
+net.inputWeights{1,1}.delays;
+net.inputWeights{1,1}.initFcn = 'rands'; % help nninit
+net.inputWeights{1,1}.learn = 1;
+net.inputWeights{1,1}.learnFcn = 'learnsom'; % help nnlearn
+net.inputWeights{1,1}.learnParam; % has default values
+    net.inputWeights{1,1}.learnParam.order_lr;
+    net.inputWeights{1,1}.learnParam.order_steps;
+    net.inputWeights{1,1}.learnParam.tune_lr;
+    net.inputWeights{1,1}.learnParam.tune_nd;
+net.inputWeights{1,1}.size; % read-only
+net.inputWeights{1,1}.weightFcn = 'dotprod'; % help nnweight; The weight function is used to transform layer inputs during simulation and training.
+net.inputWeights{1,1}.weightParam; % parameters of the current weight function
+
+net.inputWeights{2,2}.delays;
+net.inputWeights{2,2}.initFcn = 'rands'; % help nninit
+net.inputWeights{2,2}.learn = 1;
+net.inputWeights{2,2}.learnFcn = 'learnsom'; % help nnlearn
+net.inputWeights{2,2}.learnParam; % parameters of the current learning function; has defaults
+    net.inputWeights{2,2}.learnParam.order_lr;
+    net.inputWeights{2,2}.learnParam.order_steps;
+    net.inputWeights{2,2}.learnParam.tune_lr;
+    net.inputWeights{2,2}.learnParam.tune_nd;
+net.inputWeights{2,2}.size; % read-only
+net.inputWeights{2,2}.weightFcn = 'dotprod'; % help nnweight; The weight function is used to transform layer inputs during simulation and training.
+net.inputWeights{2,2}.weightParam; % parameters of the current weight function
+
+% II/6. Layer weights
+
+net.layerWeights{1,2}.delays;
+net.layerWeights{1,2}.initFcn = 'rands'; % help nninit
+net.layerWeights{1,2}.learn = 1;
+net.layerWeights{1,2}.learnFcn = 'learnh'; % help nnlearn
+net.layerWeights{1,2}.learnParam; % parameters of the current learning function; has defaults
+net.layerWeights{1,2}.size; % read-only
+net.layerWeights{1,2}.weightFcn = 'dotprod'; % help nnweight; The weight function is used to transform layer inputs during simulation and training.
+net.layerWeights{1,2}.weightParam; % parameters of the current weight function
+
+net.layerWeights{2,1}.delays;
+net.layerWeights{2,1}.initFcn = 'rands'; % help nninit
+net.layerWeights{2,1}.learn = 1;
+net.layerWeights{2,1}.learnFcn = 'learnh'; % help nnlearn
+net.layerWeights{2,1}.learnParam; % parameters of the current learning function; has defaults
+net.layerWeights{2,1}.size; % read-only
+net.layerWeights{2,1}.weightFcn = 'dotprod'; % help nnweight; The weight function is used to transform layer inputs during simulation and training.
+net.layerWeights{2,1}.weightParam; % parameters of the current weight function
+
+% III. Functions
+
+net.adaptFcn = 'trains'; % help nntrain; changes net.adaptParam!
+net.divideFcn = ''; % help nnformat; changes net.divideParam!
+net.gradientFcn = ''; % changes net.gradientParam!
+net.initFcn = 'initlay'; % help nninit; changes net.initParam!
+net.performFcn = 'sse'; % help nnperformance; changes net.performParam!
+net.trainFcn = 'trainb'; % help nntrain; changes net.trainParam!
+
+% IV. Parameters: all have default values
+
+net.adaptParam; % help(net.adaptFcn)
+net.divideParam; % help(net.divideFcn)
+net.gradientParam; % help(net.gradientFcn)
+net.initParam; % help(net.initFcn)
+net.performParam; % help(net.performFcn)
+net.trainParam; % help(net.trainFcn)
+
+% V. Weight and bias values: all are calculated from previously defined
+% values
+
+net.IW;
+net.LW;
+net.b;
+
+%% Initialize
+net = init(net);
+sim(net,INPUTS{1})
+
+%% Train
+net = train(net,INPUTS{1}, INPUTS{2})
+
+%% Validate
+sim(net,INPUTS{1})
