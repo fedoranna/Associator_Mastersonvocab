@@ -10,7 +10,7 @@
 %% Load default parameters
 
 clear
-folder = 'C:\Users\Anna\SkyDrive\Documents\MATLAB\Associator_Mastersonvocab'; % path to the folder which contains the functions and the RESULTS folder
+folder ='\\psf\Home\Documents\Associator_Mastersonvocab' ; % path to the folder which contains the functions and the RESULTS folder
 %addpath(genpath(folder));
 cd(folder)
 load Associator_M_params_1 % default parameters
