@@ -57,7 +57,8 @@ P.int_trainingtype = 'fourcycle';
 P.functionsfolder = folder; % the folder that includes all the functions, parameters and the vocabfile
 P.resultsfolder = [P.functionsfolder, '\RESULTS\']; % folder to save results
 P.resultsfile = [P.resultsfolder, 'RESULTS_Associator.xlsx']; % file to save summary results
- 
+
+ rng('shuffle');
 seeds = randchoose(1000:9999, r);   % random seeds for the models
 counter = 0;                        % the index of the running model
 

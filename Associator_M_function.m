@@ -263,16 +263,16 @@ end
 
 % T collects the sum of scores, sum of errrors, average reaction times for
 % each epoch; useful for plotting
-T.score_SS = NaN(1,trainedepochs/P.test_performance);
-T.score_PP = NaN(1,trainedepochs/P.test_performance);
-T.score_SP = NaN(1,trainedepochs/P.test_performance);
-T.score_PS = NaN(1,trainedepochs/P.test_performance);
-T.error_SS = NaN(1,trainedepochs/P.test_performance);
-T.error_PP = NaN(1,trainedepochs/P.test_performance);
-T.error_SP = NaN(1,trainedepochs/P.test_performance);
-T.error_PS = NaN(1,trainedepochs/P.test_performance);
+T.score_SS = NaN(1,floor(trainedepochs/P.test_performance));
+T.score_PP = NaN(1,floor(trainedepochs/P.test_performance));
+T.score_SP = NaN(1,floor(trainedepochs/P.test_performance));
+T.score_PS = NaN(1,floor(trainedepochs/P.test_performance));
+T.error_SS = NaN(1,floor(trainedepochs/P.test_performance));
+T.error_PP = NaN(1,floor(trainedepochs/P.test_performance));
+T.error_SP = NaN(1,floor(trainedepochs/P.test_performance));
+T.error_PS = NaN(1,floor(trainedepochs/P.test_performance));
 if P.test_RT > 0
-    elements = trainedepochs/P.test_RT;
+    elements =floor(trainedepochs/P.test_RT);
 else
     elements = 0;
 end
